@@ -1,0 +1,78 @@
+/* Transfer.css */
+
+.Transfer {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 2rem;
+    background-color: #f9f9f9;
+    color: #333;
+  }
+  
+  .Transfer-header {
+    margin-bottom: 2rem;
+  }
+  
+  .Transfer h3 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 1rem;
+  }
+  
+  .Transfer button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .Transfer button:hover {
+    background-color: #45a049; /* Darker green */
+  }
+  
+  .Transfer form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1rem;
+  }
+  
+  .Transfer input[type="text"] {
+    padding: 10px;
+    margin: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 80%;
+    max-width: 400px;
+  }
+  
+  .Transfer input[type="submit"] {
+    background-color: #008CBA; /* Blue */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .Transfer input[type="submit"]:hover {
+    background-color: #007bb5; /* Darker blue */
+  }
+  
+  .Transfer p {
+    font-size: 1rem;
+    color: #333;
+    margin-top: 1rem;
+  }
+  
