@@ -13,7 +13,7 @@ This is a decentralized application (DApp) built with React.js that interacts wi
 
 ## Project Overview
 
-- **Hosted URL**: [Live Demo](https://stupendous-centaur-b90375.netlify.app/)
+- **Hosted URL**: [Live Demo]((https://main--bcrito.netlify.app/))
 - **Technology Stack**:
   - React.js
   - ethers.js
