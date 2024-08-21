@@ -1,19 +1,14 @@
 import React, { useState } from "react";
 import "./Transfer.css";
 import { ethers } from "ethers";
-
+import Card from "../card/Card";
 
 function Transfer() {
   const PRIVATE_KEY = import.meta.env.VITE_APP_PRIVATE_KEY;
   const provider_Metamask = new ethers.providers.Web3Provider(window.ethereum);
 
-  const [blockNumber, setBlockNumber] = useState(null);
-  const [txSent, setTxSent] = useState(null);
-  const [txSentInfura, setTxSentInfura] = useState(null);
-  const handleButton1 = async () => {
-    const latest_block = await infuraProvider.getBlockNumber("latest");
-    setBlockNumber(latest_block);
-  };
+  const [Loading, setLoading] = useState(false);
+  const [list,setList] = useState([]);
 
   const handleButton2 = async () => {
     const latest_block = await provider_Metamask.getBlockNumber("latest");
@@ -21,35 +16,58 @@ function Transfer() {
   };
   const handleSubmitWeb3 = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const data = new FormData(e.target);
     const address = data.get("address");
     const amount = data.get("amount");
-    sendTransaction(address, amount);
+    try {
+      sendTransaction(address, amount);
+    }
+    catch (error) { 
+      console.error("Error sending transaction: ", error);
+      setLoading(false);
+    }
   };
   const sendTransaction = async (address, amount, signer = null) => {
-    if (signer == null) {
-      if (!window.ethereum) console.error("No wallet found!");
-      else {
-        await window.ethereum.send("eth_requestAccounts");
+    try {
+      if (signer == null) {
+        if (!window.ethereum) {
+          console.error("No wallet found!");
+          setError("No wallet found! Please install MetaMask.");
+          return;
+        }
+        
+        await window.ethereum.request({ method: 'eth_requestAccounts' });
         const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner();
-        const tx = await signer.sendTransaction({
-          to: address,
-          value: ethers.utils.parseEther(amount),
-        });
-        console.log("tx", tx);
-        setTxSent("Transaction initiated! Tx hash: " + tx.hash);
+        signer = provider.getSigner(); // Assign to `signer` variable if null
       }
-    } 
-    else {
+
       const tx = await signer.sendTransaction({
         to: address,
         value: ethers.utils.parseEther(amount),
       });
-      console.log("tx", tx);
-      setTxSentInfura("Transaction initiated! Tx hash: " + tx.hash);
+      
+      if (signer == null) {
+        console.log("tx1", tx);
+        setTxSent("Transaction initiated! Tx hash: " + tx.hash);
+      } else {
+        console.log("tx2", tx);
+      }
+      
+      const p = {
+        address: address,
+        amount: amount,
+      };
+      console.log(p);
+      setList(prevList => [...prevList, p]); 
+
+    } catch (error) {
+      console.error("Transaction failed:", error);
+    } finally {
+      setLoading(false); 
     }
   };
+
 
   return (
     <div className="Transfer">
@@ -59,10 +77,16 @@ function Transfer() {
           <form onSubmit={handleSubmitWeb3}>
             <input type="text" name="address" placeholder="Recipient Address" />
             <input type="text" name="amount" placeholder="Amount (ETH)" />
-            <input type="submit" value="Send" />
+            {Loading ? (<p>Loading....</p>):(<input type="submit" value="Send"  />)}
+            
           </form>
         </div>
       </header>
+      <div className="cardList">
+        {list.map((item, index) => (
+          <Card key={index} address={item.address} amount={item.amount} />
+        ))}
+      </div>
     </div>
   );
 }
